@@ -47,7 +47,7 @@ export default function Base({ children }) {
       </Head>
       <Nav />
 
-      <main>{children}</main>
+      {children}
 
       <Footer />
     </div>
