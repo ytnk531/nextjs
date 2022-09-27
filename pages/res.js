@@ -1,16 +1,22 @@
 import Base from "../components/base";
-import { useEffect, useState } from "react";
 
-export default function Res() {
-  const [resume, setResume] = useState(null);
-  useEffect(() => {
-    fetch("api/resume")
-      .then((res) => res.json())
-      .then((data) => {
-        setResume(data.content);
-      });
-  }, []);
+export async function getStaticProps() {
+  let content;
+  await fetch("https://ytnk531.microcms.io/api/v1/resume", {
+    headers: { "X-MICROCMS-API-KEY": process.env.MICROCMS_API_KEY },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      content = data.content;
+    });
 
+  return {
+    props: { resume: content },
+    revalidate: 10,
+  };
+}
+
+export default function Res({ resume }) {
   return (
     <Base>
       <main className="container mx-auto px-4 my-4">
