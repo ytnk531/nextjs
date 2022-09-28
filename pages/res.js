@@ -1,29 +1,26 @@
 import Base from "../components/base";
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import * as contentful from "contentful";
 
 export async function getStaticProps() {
-  let content;
-  await fetch("https://ytnk531.microcms.io/api/v1/resume", {
-    headers: { "X-MICROCMS-API-KEY": process.env.MICROCMS_API_KEY },
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      content = data.content;
-    });
-
+  const c = contentful.createClient({
+    space: "tiam8ef0kyt9",
+    accessToken: process.env.CONTENTFUL_API_KEY,
+  });
+  const cc = await c.getEntry("5FZQXLizIuyF4GKmQTyawI");
   return {
-    props: { resume: content },
+    props: {
+      components: cc.fields.content,
+    },
     revalidate: 10,
   };
 }
 
-export default function Res({ resume }) {
+export default function Res({ components }) {
   return (
     <Base>
       <main className="container mx-auto px-4 my-4">
-        <div
-          dangerouslySetInnerHTML={{ __html: resume }}
-          className="content"
-        ></div>
+        <div className="content">{documentToReactComponents(components)}</div>
       </main>
     </Base>
   );
