@@ -64,8 +64,8 @@ function Articles() {
 export default function Home() {
   return (
     <Base>
-      <main className="container mx-auto px-4">
-        <section className="mt-6">
+      <main className="container mx-auto px-4 py-6">
+        <section className="">
           <p>エンジニアのわいたなかです。</p>
           <p className="mt-2">
             大学と大学院でコンピューターネットワークを3年間専攻した後、ソフトウェアエンジニアとして5年ほど働いています。
