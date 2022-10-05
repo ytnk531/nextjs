@@ -29,6 +29,7 @@ async function handlePost(req, res) {
 }
 
 async function handleGet(req, res) {
+  const messagePastMs = 1000 * 60 * 10;
   const messages = await client
     .send(
       new QueryCommand({
@@ -41,7 +42,7 @@ async function handleGet(req, res) {
         },
         ExpressionAttributeValues: {
           ":date": { S: new Date().toISOString().substring(0, 10) },
-          ":time": { N: (Date.now() - 1000 * 60).toString() },
+          ":time": { N: (Date.now() - messagePastMs).toString() },
         },
         ScanIndexForward: false,
       })
