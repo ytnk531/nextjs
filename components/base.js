@@ -17,7 +17,6 @@ function Nav() {
         <NavLink href="/" text="自己紹介"></NavLink>
         <NavLink href="/res" text="経歴"></NavLink>
         <NavLink href="/contact" text="連絡先"></NavLink>
-        <NavLink href="/chat" text="チャット"></NavLink>
       </div>
     </nav>
   );
