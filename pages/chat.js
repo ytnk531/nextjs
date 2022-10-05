@@ -8,7 +8,7 @@ function fetchMessages() {
 function Messages({ messages }) {
   return (
     <div>
-      {[...messages].map(({ time, text }) => {
+      {[...messages].reverse().map(({ time, text }) => {
         return (
           <div
             className="border-b-2 border-b-gray-100 last:border-b-0 py-2"

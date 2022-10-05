@@ -5,7 +5,13 @@ import {
 } from "@aws-sdk/client-dynamodb";
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 
-const client = new DynamoDBClient({ region: "ap-northeast-1" });
+const client = new DynamoDBClient({
+  region: "ap-northeast-1",
+  credentials: {
+    accessKeyId: process.env.ACCESS_KEY,
+    secretAccessKey: process.env.SECRET_KEY,
+  },
+});
 
 async function handlePost(req, res) {
   const text = req.body.text;
