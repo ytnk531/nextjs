@@ -1,13 +1,34 @@
 import Base from "../components/base";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Pusher from "pusher-js";
 
-export default function Chat() {
+export async function getStaticProps() {
+  return {
+    props: {
+      pusher_api_key: process.env.PUSHER_KEY,
+    },
+  };
+}
+
+export default function Chat({ pusher_api_key }) {
   const [messages, setMessages] = useState([]);
+  const pusher = new Pusher(pusher_api_key, {
+    cluster: "ap3",
+  });
   useEffect(() => {
     fetchMessages().then((resp) => {
       resp.json().then((json) => {
         setMessages(json);
+      });
+    });
+
+    const channel = pusher.subscribe("my-channel");
+    channel.bind("my-event", () => {
+      fetchMessages().then((resp) => {
+        resp.json().then((json) => {
+          setMessages(json);
+        });
       });
     });
   }, []);
