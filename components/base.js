@@ -2,6 +2,21 @@ import Head from "next/head";
 import Link from "next/link";
 import React from "react";
 
+import * as contentful from "contentful";
+
+export async function getStaticProps() {
+  const c = contentful.createClient({
+    space: "tiam6ef0kyt9",
+    accessToken: process.env.CONTENTFUL_API_KEY,
+  });
+  const cc = await c.getEntry("5FZQXLizIuyF4GKmQTyawI");
+  return {
+    props: {
+      components: cc.fields.content,
+    },
+    revalidate: 10,
+  };
+}
 function NavLink({ text, href }) {
   return (
     <Link href={href}>

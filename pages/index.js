@@ -1,30 +1,19 @@
 import React from "react";
 import Link from "next/link";
 import Base from "../components/base";
+import contentful_client from "../modules/contentful";
 
-const articles = [
-  {
-    title: "Refactoring Kataを使ってRubyのリファクタリングを練習する会",
-    url: "https://youtu.be/DA3H-Z778-I",
-  },
-  {
-    title:
-      "Refactoring Kataを使ってRubyのリファクタリングを練習する会 テニス編",
-    url: "https://youtu.be/jNFULs33hiQ",
-  },
-  {
-    title: "やりすぎないドメイン駆動設計 on Rails",
-    url: "https://ytnk531.hatenablog.com/entry/2021/12/27/201927",
-  },
-  {
-    title: "rspecのrspecに学ぶ、シンプルなrspecの書き方",
-    url: "https://qiita.com/ytnk531/items/c88dfea3fd46ff704a2f",
-  },
-  {
-    title: "RubyKaigi 2020 予習",
-    url: "https://jungle-traffic-1ba.notion.site/RubyKaigi-2022-a15dc34c50194019ba4d5438b0ef63ea",
-  },
-];
+export async function getStaticProps() {
+  const articles = await contentful_client
+    .getEntries({ content_type: "card" })
+    .then((response) => {
+      return response.items.map((i) => i.fields);
+    });
+  return {
+    props: { articles: articles },
+    revalidate: 10,
+  };
+}
 
 function Article({ title, url }) {
   return (
@@ -51,7 +40,7 @@ function Article({ title, url }) {
   );
 }
 
-function Articles() {
+function Articles({ articles }) {
   return (
     <div className="flex gap-6 flex-wrap justify-center">
       {articles.map(({ url, title }) => {
@@ -61,7 +50,7 @@ function Articles() {
   );
 }
 
-export default function Home() {
+export default function Home({ articles }) {
   return (
     <Base>
       <main className="container mx-auto px-4 py-6">
@@ -73,7 +62,7 @@ export default function Home() {
           </p>
         </section>
         <section className="mt-6">
-          <Articles />
+          <Articles articles={articles} />
         </section>
       </main>
     </Base>
